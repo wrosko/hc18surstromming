@@ -26,6 +26,7 @@ function [distgraph, starttimes, lengths, bonus] = DataHelper(filename)
         lengths(i) = GetDistance(ride1, ride1);
         starttimes(i,1) = ride1(5);
         starttimes(i,2) = ride1(6) - lengths(i);
+        distgraph(i,i) = NaN; 
         for j = 1:i
             ride2 = data(j,:);
             distgraph(i,j) = GetDistance(ride1, ride2);
