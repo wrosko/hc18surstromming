@@ -1,13 +1,13 @@
 function pathLength = GetNearestNeighbourPathLength(nCars, tMax, dij, si, fi, b, wi)
 nNodes = size(dij,1);
 tabuList = [];
-notTabuList = 1:nNodes;
 
 timeCarAvailable = zeros(nCars);
 carLocations = zeros(nCars) + nNodes;
 carPaths = cell(1,nCars);
 for c = 1:nCars
     carPaths{c} = [];
+end
 
 for t = 0:tMax
     avail = find(timeCarAvailable<=t);
