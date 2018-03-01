@@ -10,13 +10,13 @@ clc;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-cityLocation = LoadCityLocations();
-numberOfCities = length(cityLocation);
+load("a_example.data") % loads distgraph, starttimes, lengths, header
+nRides = length(lengths);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-numberOfAnts = numberOfCities*2;
+numberOfAnts = nRides*2;
 alpha = 1;
 beta = 4;
 rho = 0.2;
