@@ -38,8 +38,8 @@ for t = 1:maxtime
             notTabuList(nextCity) = 0;
             arrival(car) = t ...
                 + distgraph(thisCity(car),nextCity) ... %driving time
-                + max(0,starttimes(nextCity,1) - t - lengths(thisCity(car))) ... %waiting time
-                + lengths(nextCity); %driving time 2
+                + max(0,lengths(thisCity(car)) - startt) ... %waiting time
+                + lengths(nextCity);%driving time 2
             thisCity(car) = nextCity;
         end
     end
