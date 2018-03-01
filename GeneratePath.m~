@@ -9,6 +9,12 @@ tabuList = [startCity];
 notTabuList(startCity) = 0;
 thisCity = ones(nCars,1) * startCity;
 
+
+path = {};
+for car = 1:ncars
+    path(car) = 
+end
+
 for t = 1:maxtime
     for car = 1:ncars
         if arrival(car) < t
@@ -38,11 +44,9 @@ for t = 1:maxtime
             notTabuList(nextCity) = 0;
             arrival(car) = t ...
                 + distgraph(thisCity(car),nextCity) ... %driving time
-                + max(0,lengths(thisCity(car)) - startt) ... %waiting time
-                + lengths(nextCity);%driving time 2
+                + max(0,starttimes(nextCity,1) - t - lengths(thisCity(car))) ... %waiting time
+                + lengths(nextCity); %driving time 2
             thisCity(car) = nextCity;
         end
     end
 end
-
-path = tabuList;
