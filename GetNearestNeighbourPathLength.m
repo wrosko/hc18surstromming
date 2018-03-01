@@ -1,6 +1,7 @@
 function pathLength = GetNearestNeighbourPathLength(nCars, tMax, dij, si, fi, b, wi)
 nNodes = size(dij,1);
 tabuList = [];
+notTabuList = 1:nNodes;
 
 timeCarAvailable = zeros(nCars);
 carLocations = zeros(nCars) + nNodes;
@@ -17,7 +18,9 @@ for t = 0:tMax
     dcarj = dij(availCarLocations,:);
     etaij = GetVisibility(nNodes, t, si, dcarj, wi, b, fi);
     for car = 1:length(avail)
-        [m, m_ind] = max(etaij(car,:));
+        tmpetaij = etaij;
+        tmpetaij(:,tabuList) = 0;
+        [m, m_ind] = max(tmpetaij(car,:));
         carLocations(car) = m_ind;
         tabuList = [tabuList m_ind];
         carPaths{car} = [carPaths{car} m_ind];
