@@ -74,4 +74,4 @@ while (minimumPathLength > targetPathLength)
 
 end
 
-saveas(tspFigure, "21cACO.png", 'png');
+%saveas(tspFigure, "21cACO.png", 'png');

@@ -12,18 +12,21 @@
 function visibility = GetVisibility(jobLocation, t, s_i, d_carj, W_i, b, f_i)
 nJobs = length(jobLocation);
 nCars = size(d_carj,1);
-visibility = zeros(nJobs,nJobs);
+visibility = zeros(nJobs);
 wait_at_dest = WaitAtDestination(s_i, d_carj, t);
 
 
 for carN = 1:nCars
     lateCheck = f_i - d_carj(carN,:)' - t;
-    greater_than_zero = (lateCheck >= 0);
+    greater_than_zero = find(late_check >= 0);
     current_wait = wait_at_dest(:,carN);
     
-    b_i = (current_wait >= 0) * b;
-    eta = (W_i + b_i) ./ (d_carj .* (abs(current_wait) + 1));
-    eta = greater_than_zero * eta;
-    visibility(car,:) = eta;
-end
+    b_i = (wait_at_dest >= 0) * b
+    eta = (W_i + b_i) ./ (d_carj *. (abs(wait_at_dest) + 1));
+    for i = 1:length(greater_than_zero)
+        
+   
+        
+
+
 end
