@@ -1,5 +1,5 @@
-function path = GeneratePath(pheromoneLevel, visibility, alpha, beta)
-nCities = length(pheromoneLevel);
+function path = GeneratePath(pheromoneLevel, distgraph, starttimes, lengths, bonus, ncars, alpha, beta)
+nCities = length(lengths);
 startCity = randi(nCities);
 notTabuList = ones(1, nCities);
 

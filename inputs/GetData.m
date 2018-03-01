@@ -5,15 +5,16 @@ clear all;
 %filename = "c_no_hurry";
 filename = "d_metropolis";
 %filename = "e_high_bonus";
-[distgraph, starttimes, lengths, header] = DataHelper(strcat(filename,'.in'));
+[distgraph, starttimes, lengths, bonus, ncars] = DataHelper(strcat(filename,'.in'));
 save(strcat(filename,'.data'),'distgraph', 'starttimes', 'lengths', 'header');
 
 
-function [distgraph, starttimes, lengths, bonus] = DataHelper(filename)
+function [distgraph, starttimes, lengths, bonus, ncars] = DataHelper(filename)
     data = importdata(filename);
     header = data(1,:);
     bonus = header(5);
     nrides = header(4)+1;
+    ncars = header(3);
     
     data = data(2:end,:);
     data = [data; [0,0,0,0,0,0]];
