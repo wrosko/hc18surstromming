@@ -4,19 +4,19 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clear all;
+%clear all;
 clc;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load("a_example.data") % loads distgraph, starttimes, lengths, bonus, ncars
+%load('a_example.data') % loads distgraph, starttimes, lengths, bonus, ncars
 nRides = length(lengths);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-numberOfAnts = nRides*2;
+numberOfAnts = nRides*2;  
 alpha = 1;
 beta = 4;
 rho = 0.2;
@@ -59,7 +59,7 @@ while (minimumPathLength > targetPathLength)
     bestPath = path;
     minimumPathLength = pathLength;
     disp(sprintf('Iteration %d, ant %d: path length = %.5f',iIteration,k,minimumPathLength));
-    PlotPath(connection,cityLocation,path);
+  %  PlotPath(connection,cityLocation,path);
   end
   pathCollection(k,:) = path;
   pathLengthCollection(k) = pathLength;
@@ -69,7 +69,7 @@ while (minimumPathLength > targetPathLength)
  % Update pheromone levels
  %%%%%%%%%%%%%%%%%%%%%%%%%%
 
- deltaPheromoneLevel = ComputeDeltaPheromoneLevels(pathCollection,pathLengthCollection,ridesNumber,nCar);
+ deltaPheromoneLevel = ComputeDeltaPheromoneLevels(pathCollection,pathLengthCollection,nRides,ncars);
  pheromoneLevel = UpdatePheromoneLevels(pheromoneLevel,deltaPheromoneLevel,rho);
 
 end
