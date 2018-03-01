@@ -1,9 +1,9 @@
 clear all;
 
-%filename = "a_example";
+filename = "a_example";
 %filename = "b_should_be_easy";
 %filename = "c_no_hurry";
-filename = "d_metropolis";
+%filename = "d_metropolis";
 %filename = "e_high_bonus";
 [distgraph, starttimes, lengths, bonus, ncars, maxtime] = DataHelper(strcat(filename,'.in'));
 save(strcat(filename,'.data'),'distgraph', 'starttimes', 'lengths', 'bonus', 'ncars', 'maxtime');

@@ -1,0 +1,31 @@
+function pathLength = GetNearestNeighbourPathLength(nCars, tMax, dij, si, fi, wi)
+ndes = size(dij,1);
+tabuList = 1:(nNodes-1);
+
+timeCarAvailable = zeros(nCars);
+carLocations = zeros(nCars) + nNodes;
+for t = 0:tMax
+    avail = find(timeCarAvailable<=t);
+    availCarLocations = carLocations(avail);
+    for car = 1:length(avail)
+        carind = avail(car);
+        
+    end
+end
+
+NNPath = zeros(nCars, nRides);
+pathLength = 0;
+NNPath(:,1) = nRides;
+distanceMatrix(:, firstCity) = NaN(1, size(distanceMatrix, 1));
+currentCity = firstCity;
+for i = 2:nCities
+    distances = distanceMatrix(currentCity, :);
+    [distToNearest, nearestCity] = min(distances);
+    pathLength = pathLength + distToNearest;
+    NNPath(i) = nearestCity;
+    currentCity = nearestCity;
+    distanceMatrix(:, currentCity) = NaN(1, size(distanceMatrix, 1));
+end
+vectLastToFirst = cityLocation(firstCity, :) - cityLocation(currentCity, :);
+distLastToFirst = norm(vectLastToFirst);
+pathLength = pathLength + distLastToFirst;

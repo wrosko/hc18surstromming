@@ -1,30 +1,27 @@
-function pathLength = GetNearestNeighbourPathLength(cityLocation)
-nCities = size(cityLocation, 1);
+function pathLength = GetNearestNeighbourPathLength(nCars, tMax, dij, si, fi, b, wi)
+nNodes = size(dij,1);
+tabuList = [];
 
-distanceMatrix = zeros(nCities) * NaN;
-for i = 1:(nCities-1)
-    for j = (i+1):nCities
-        vectBetweenCities = cityLocation(i,:) - cityLocation(j,:);
-        distBetweenCities = norm(vectBetweenCities);
-        distanceMatrix(i,j) = distBetweenCities;
-        distanceMatrix(j,i) = distBetweenCities;
+timeCarAvailable = zeros(nCars);
+carLocations = zeros(nCars) + nNodes;
+carPaths = cell(1,nCars);
+for c = 1:nCars
+    carPaths{c} = [];
+
+for t = 0:tMax
+    avail = find(timeCarAvailable<=t);
+    if length(avail)==0
+        continue
+    end
+    availCarLocations = carLocations(avail);
+    dcarj = dij(availCarLocations,:);
+    etaij = GetVisibility(nNodes, t, si, dcarj, wi, b, fi);
+    for car = 1:length(avail)
+        [m, m_ind] = max(etaij(car,:));
+        carLocations(car) = m_ind;
+        tabuList = [tabuList m_ind];
+        carPaths{car} = [carPaths{car} m_ind];
+        timeCarAvailable(car) = timeCarAvailable(car) + dcarj(car,m_ind) + wi(m_ind);
     end
 end
 
-NNPath = zeros(1, nCities);
-pathLength = 0;
-firstCity = randi([1 nCities]);
-NNPath(1) = firstCity;
-distanceMatrix(:, firstCity) = NaN(1, size(distanceMatrix, 1));
-currentCity = firstCity;
-for i = 2:nCities
-    distances = distanceMatrix(currentCity, :);
-    [distToNearest, nearestCity] = min(distances);
-    pathLength = pathLength + distToNearest;
-    NNPath(i) = nearestCity;
-    currentCity = nearestCity;
-    distanceMatrix(:, currentCity) = NaN(1, size(distanceMatrix, 1));
-end
-vectLastToFirst = cityLocation(firstCity, :) - cityLocation(currentCity, :);
-distLastToFirst = norm(vectLastToFirst);
-pathLength = pathLength + distLastToFirst;
