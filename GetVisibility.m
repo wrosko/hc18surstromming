@@ -9,10 +9,9 @@
 %         visibility(j,i) = viz;
 %     end
 % end
-function visibility = GetVisibility(jobLocation, t, s_i, d_carj, W_i, b, f_i)
-nJobs = length(jobLocation);
+function visibility = GetVisibility(nJobs, t, s_i, d_carj, W_i, b, f_i)
 nCars = size(d_carj,1);
-visibility = zeros(nJobs,nJobs);
+visibility = zeros(nCars,nJobs);
 wait_at_dest = WaitAtDestination(s_i, d_carj, t);
 
 
