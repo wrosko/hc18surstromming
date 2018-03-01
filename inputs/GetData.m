@@ -5,15 +5,17 @@ clear all;
 %filename = "c_no_hurry";
 filename = "d_metropolis";
 %filename = "e_high_bonus";
-[distgraph, starttimes, lengths, header] = DataHelper(strcat(filename,'.in'));
-save(strcat(filename,'.data'),'distgraph', 'starttimes', 'lengths', 'header');
+[distgraph, starttimes, lengths, bonus, ncars, maxtime] = DataHelper(strcat(filename,'.in'));
+save(strcat(filename,'.data'),'distgraph', 'starttimes', 'lengths', 'bonus', 'ncars', 'maxtime');
 
 
-function [distgraph, starttimes, lengths, bonus] = DataHelper(filename)
+function [distgraph, starttimes, lengths, bonus, ncars, maxtime] = DataHelper(filename)
     data = importdata(filename);
     header = data(1,:);
-    bonus = header(5);
+    ncars = header(3);
     nrides = header(4)+1;
+    bonus = header(5);
+    maxtime = header(6);
     
     data = data(2:end,:);
     data = [data; [0,0,0,0,0,0]];
@@ -26,10 +28,11 @@ function [distgraph, starttimes, lengths, bonus] = DataHelper(filename)
         lengths(i) = GetDistance(ride1, ride1);
         starttimes(i,1) = ride1(5);
         starttimes(i,2) = ride1(6) - lengths(i);
+        distgraph(i,i) = NaN; 
         for j = 1:i
             ride2 = data(j,:);
             distgraph(i,j) = GetDistance(ride1, ride2);
-            distgraph(j,i) = distgraph(i,j);
+            distgraph(j,i) = GetDistance(ride2, ride1);
         end
     end
 end

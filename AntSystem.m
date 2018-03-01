@@ -10,13 +10,13 @@ clc;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-cityLocation = LoadCityLocations();
-numberOfCities = length(cityLocation);
+load("a_example.data") % loads distgraph, starttimes, lengths, bonus, ncars
+nRides = length(lengths);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-numberOfAnts = numberOfCities*2;
+numberOfAnts = nRides*2;
 alpha = 1;
 beta = 4;
 rho = 0.2;
@@ -53,7 +53,7 @@ while (minimumPathLength > targetPathLength)
  %%%%%%%%%%%%%%%%%%%%%%%%%%
 
  for k = 1:numberOfAnts
-  path = GeneratePath(pheromoneLevel, visibility, alpha, beta);
+  path = GeneratePath(pheromoneLevel, distgraph, starttimes, lengths, bonus, ncars, alpha, beta);
   pathLength = GetPathLength(path,cityLocation);
   if (pathLength < minimumPathLength)
     bestPath = path;
