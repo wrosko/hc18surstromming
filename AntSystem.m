@@ -69,7 +69,7 @@ while (minimumPathLength > targetPathLength)
  % Update pheromone levels
  %%%%%%%%%%%%%%%%%%%%%%%%%%
 
- deltaPheromoneLevel = ComputeDeltaPheromoneLevels(pathCollection,pathLengthCollection);
+ deltaPheromoneLevel = ComputeDeltaPheromoneLevels(pathCollection,pathLengthCollection,ridesNumber,nCar);
  pheromoneLevel = UpdatePheromoneLevels(pheromoneLevel,deltaPheromoneLevel,rho);
 
 end
