@@ -25,6 +25,10 @@ class Myrorna:
         self.load_pickle(prob_name)
         self.max_score = self.lengths_of_rides.sum() + self.bonus*len(self.lengths_of_rides)  # theoretical maximum score -- in general, there will not be possible solutions that can achieve this
         print("Max score:", self.max_score)
+        self.min_tstep = int(np.min(self.lengths_of_rides[1:]) - 1)
+        print("Min ride length:", self.min_tstep+1)
+        self.max_tstep = int(np.max(self.lengths_of_rides[1:]) - 1)
+        print("Max ride length:", self.max_tstep+1)
         self.slocs = np.zeros(self.N)
 
 
@@ -134,7 +138,7 @@ class Myrorna:
 
         lnt = len(not_tabu)  # keep track of number of available nodes -- if it stagnates, exit loop and return
         clnt = 0
-        while clnt < self.N/gamma and len(blacklist) < self.N and lnt > 0:
+        while clnt < self.max_tstep/self.min_tstep and len(blacklist) < self.N and lnt > 0:
             last_lnt = len(not_tabu)
 
             travellers = set(np.random.choice(self.N, size=int(gamma*self.N), replace=False)) # select some number of travellers randomly
@@ -228,13 +232,12 @@ class Myrorna:
 
         paths, scores, avail, locs, tabu, not_tabu = self.init_trial()
 
-        min_tstep = int(np.min(self.lengths_of_rides[1:]) - 1)
-        tstep = min_tstep
+        tstep = self.min_tstep
 
         lnt = len(not_tabu)  # keep track of number of available nodes -- if it stagnates, exit loop and return
         clnt = 0
 
-        while clnt < self.N/gamma and lnt > 0:
+        while clnt < self.max_tstep/self.min_tstep and lnt > 0:
             last_lnt = len(not_tabu)
 
             travellers = np.where(avail <= tstep)[0]
@@ -280,7 +283,7 @@ class Myrorna:
             else:
                 clnt = 0
 
-            tstep += min_tstep
+            tstep += self.min_tstep
 
         return paths, scores
 
@@ -420,17 +423,19 @@ def repickle_all(input_names):
     for name in input_names:
         gen_pickle(name)
 
-#repickle_all(input_names)
+if __name__=="__main__":
 
-in_name = input_names[1] # change this index to change problem being solved
-gr = (np.sqrt(5)+1)/2
+    #repickle_all(input_names)
 
-# can't seem to find good param settings ...
-Kpc   = 20        # Kpc   is the number of jobs per core
-alpha = 1/gr      # alpha bigger puts more emphasis on variation in tau -- more focused on successes in previous rounds
-beta  = gr        # beta  bigger puts more emphasis on variation in eta -- more focused on nearest-neighbors connections (in space and time)
-gamma = 1-1/gr**4 # gamma in range (0,1] assigns a percentage to the number of travellers who are given an assignment per round. higher gamma means more even assignment across travellers
-rho   = 1/gr**4   # rho   specifies the evaporation rate of pheromones. smaller rho exaggerates more the differences between large and small amounts of pheromones
+    in_name = input_names[0] # change this index to change problem being solved
+    gr = (np.sqrt(5)+1)/2
 
-m = Myrorna(in_name, Kpc, alpha, beta, gamma, rho)
-m.solve()
+    # can't seem to find good param settings ...
+    Kpc   = 1         # Kpc   is the number of jobs per core
+    alpha = 1/gr      # alpha bigger puts more emphasis on variation in tau -- more focused on successes in previous rounds
+    beta  = gr        # beta  bigger puts more emphasis on variation in eta -- more focused on nearest-neighbors connections (in space and time)
+    gamma = 1 # gamma in range (0,1] assigns a percentage to the number of travellers who are given an assignment per round. higher gamma means more even assignment across travellers
+    rho   = 1/gr**8   # rho   specifies the evaporation rate of pheromones. smaller rho exaggerates more the differences between large and small amounts of pheromones
+
+    m = Myrorna(in_name, Kpc, alpha, beta, gamma, rho)
+    m.solve()
